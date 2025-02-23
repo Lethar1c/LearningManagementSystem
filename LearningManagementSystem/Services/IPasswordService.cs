@@ -2,7 +2,7 @@
 {
     public interface IPasswordService
     {
-        string HashPassword(string password);
-        bool Match(string password, string hash);
+        string HashPassword(string user, string password);
+        bool Match(string user, string password, string hash);
     }
 }

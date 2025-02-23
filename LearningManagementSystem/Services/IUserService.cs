@@ -11,6 +11,6 @@ namespace LearningManagementSystem.Services
         Task<List<UserDto>> GetAll();
         Task<UserDto?> FirstOrDefault(Filter filter);
         Task Delete(Guid id);
-        Task<UserDto?> Update(Guid id, UserDto userDto);
+        Task<UserDto?> Update(Guid id, UpdateUserDto userDto);
     }
 }

@@ -43,7 +43,7 @@ namespace LearningManagementSystem.Services
             User? user = await _userRepository.FirstOrDefault(u => u.Email == email);
             if (user == null) { return null; }
 
-            if (!_passwordService.Match(password, user.HashedPassword))
+            if (!_passwordService.Match(email, password, user.HashedPassword))
             {
                 return null;
             }
@@ -86,7 +86,7 @@ namespace LearningManagementSystem.Services
             {
                 Email = userDto.Email,
                 Name = userDto.Name,
-                HashedPassword = _passwordService.HashPassword(userDto.Password),
+                HashedPassword = _passwordService.HashPassword(userDto.Email, userDto.Password),
                 Courses = []
             });
             return UserToDto(newUser);
@@ -100,7 +100,7 @@ namespace LearningManagementSystem.Services
             user.Name = userDto.Name ?? user.Name;
             if (!string.IsNullOrWhiteSpace(userDto.Password))
             {
-                user.HashedPassword = _passwordService.HashPassword(userDto.Password);
+                user.HashedPassword = _passwordService.HashPassword(user.Email, userDto.Password);
             }
             await _userRepository.Update(id, user);
             return UserToDto(user);
