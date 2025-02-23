@@ -1,6 +1,7 @@
 ﻿using LearningManagementSystem.DataAccess.Models;
 using LearningManagementSystem.DataAccess.Users;
 using LearningManagementSystem.Dtos;
+using LearningManagementSystem.Services.Mappers;
 
 namespace LearningManagementSystem.Services
 {
@@ -15,29 +16,6 @@ namespace LearningManagementSystem.Services
             _passwordService = passwordService;
         }
 
-        private UserDto UserToDto(User user)
-        {
-            List<CourseDto> courses = [];
-
-            foreach (Course course in user.Courses)
-            {
-                courses.Add(new CourseDto()
-                {
-                    Id = course.Id,
-                    Name = course.Name,
-                    Description = course.Description,
-                });
-            }
-
-            return new UserDto()
-            {
-                Id = user.Id,
-                Name = user.Name,
-                Email = user.Email,
-                Courses = courses
-            };
-        }
-
         public async Task<UserDto?> Auth(string email, string password)
         {
             User? user = await _userRepository.FirstOrDefault(u => u.Email == email);
@@ -47,7 +25,7 @@ namespace LearningManagementSystem.Services
             {
                 return null;
             }
-            return UserToDto(user);
+            return UserMapper.UserToDto(user);
         }
 
         public async Task Delete(Guid id)
@@ -57,9 +35,9 @@ namespace LearningManagementSystem.Services
 
         public async Task<UserDto?> FirstOrDefault(IUserService.Filter filter)
         {
-            User? user = await _userRepository.FirstOrDefault(u => filter(UserToDto(u)));
+            User? user = await _userRepository.FirstOrDefault(u => filter(UserMapper.UserToDto(u)));
             if (user == null) { return null; }
-            return UserToDto(user);
+            return UserMapper.UserToDto(user);
         }
 
         public async Task<UserDto?> Get(Guid id)
@@ -73,7 +51,7 @@ namespace LearningManagementSystem.Services
             List<UserDto> result = [];
             foreach (var user in users)
             {
-                result.Add(UserToDto(user));
+                result.Add(UserMapper.UserToDto(user));
             }
             return result;
         }
@@ -89,7 +67,7 @@ namespace LearningManagementSystem.Services
                 HashedPassword = _passwordService.HashPassword(userDto.Email, userDto.Password),
                 Courses = []
             });
-            return UserToDto(newUser);
+            return UserMapper.UserToDto(newUser);
         }
 
         public async Task<UserDto?> Update(Guid id, UpdateUserDto userDto)
@@ -103,7 +81,7 @@ namespace LearningManagementSystem.Services
                 user.HashedPassword = _passwordService.HashPassword(user.Email, userDto.Password);
             }
             await _userRepository.Update(id, user);
-            return UserToDto(user);
+            return UserMapper.UserToDto(user);
         }
     }
 }
