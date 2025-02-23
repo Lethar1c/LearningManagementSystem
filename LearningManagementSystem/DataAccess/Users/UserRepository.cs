@@ -19,7 +19,12 @@ namespace LearningManagementSystem.DataAccess.Users
 
         public async Task Delete(Guid id)
         {
-            await _context.Users.Where(u => u.Id == id).ExecuteDeleteAsync();
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+            if (user != null)
+            {
+                _context.Users.Remove(user);
+                await _context.SaveChangesAsync();
+            }
         }
 
         public async Task<User?> FirstOrDefault(IUserRepository.Filter filter)
@@ -39,12 +44,15 @@ namespace LearningManagementSystem.DataAccess.Users
 
         public async Task<User?> Update(Guid id, User user)
         {
-            await _context.Users.Where(u => u.Id == id).ExecuteUpdateAsync(setters =>
-                setters.SetProperty(u => u.Name, user.Name)
-                       .SetProperty(u => u.Email, user.Email)
-                       .SetProperty(u => u.HashedPassword, user.HashedPassword)
-            );
-            return user;
+            var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+            if (existingUser == null) return null;
+
+            existingUser.Name = user.Name;
+            existingUser.Email = user.Email;
+            existingUser.HashedPassword = user.HashedPassword;
+
+            await _context.SaveChangesAsync();
+            return existingUser;
         }
     }
 }
