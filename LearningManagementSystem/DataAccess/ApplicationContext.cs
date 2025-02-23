@@ -1,4 +1,4 @@
-﻿using LearningManagementSystem.DataAccess.Users;
+﻿using LearningManagementSystem.DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace LearningManagementSystem.DataAccess
@@ -6,13 +6,22 @@ namespace LearningManagementSystem.DataAccess
     public class ApplicationContext : DbContext
     {
         public DbSet<User> Users { get; set; }
+        public DbSet<Course> Courses { get; set; }
         public ApplicationContext()
         {
-            Database.EnsureCreated();
+            Database.Migrate();
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlite("Data Source=database.sqlite");
+        }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Course>()
+                        .HasOne(c => c.Author)
+                        .WithMany(u => u.Courses)
+                        .HasForeignKey(c => c.AuthorId)
+                        .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

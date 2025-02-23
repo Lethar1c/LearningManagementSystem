@@ -1,4 +1,6 @@
-﻿namespace LearningManagementSystem.DataAccess.Users
+﻿using LearningManagementSystem.DataAccess.Models;
+
+namespace LearningManagementSystem.DataAccess.Users
 {
     public interface IUserRepository
     {
