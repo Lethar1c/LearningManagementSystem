@@ -9,7 +9,7 @@ namespace LearningManagementSystem.DataAccess.Courses
         Task<Course?> FirstOrDefault(Filter filter);
         Task<Course?> Get(Guid id);
         Task<List<Course>> GetAll();
-        Task<Course?> Add(Course course);
+        Task<Course> Add(Course course);
         Task<Course?> Update(Guid id, Course user);
         Task Delete(Guid id);
     }

@@ -10,6 +10,6 @@ namespace LearningManagementSystem.Services
         Task<List<CourseDto>> GetAll();
         Task<CourseDto?> FirstOrDefault(Filter filter);
         Task Delete(Guid id);
-        Task<CourseDto?> Update(Guid id, CourseDto userDto);
+        Task<CourseDto?> Update(Guid id, CourseDto courseDto);
     }
 }

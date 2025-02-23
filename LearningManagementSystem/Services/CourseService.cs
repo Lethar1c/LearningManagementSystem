@@ -1,37 +1,63 @@
-﻿using LearningManagementSystem.Dtos;
+﻿using LearningManagementSystem.DataAccess.Courses;
+using LearningManagementSystem.DataAccess.Models;
+using LearningManagementSystem.Dtos;
+using LearningManagementSystem.Services.Mappers;
 
 namespace LearningManagementSystem.Services
 {
     public class CourseService : ICourseService
     {
-        public Task<CourseDto> Add(CourseDto courseDto)
+        ICourseRepository _courseRepository;
+        public CourseService(ICourseRepository courseRepository)
         {
-            throw new NotImplementedException();
+            _courseRepository = courseRepository;
+        }
+        public async Task<CourseDto> Add(CourseDto courseDto)
+        {
+            Course course = await _courseRepository.Add(new Course()
+            {
+                Name = courseDto.Name,
+                Description = courseDto.Description,
+                AuthorId = courseDto.Author.Id,
+            });
+            return CourseMapper.CourseToDto(course);
         }
 
-        public Task Delete(Guid id)
+        public async Task Delete(Guid id)
         {
-            throw new NotImplementedException();
+            await _courseRepository.Delete(id);
         }
 
-        public Task<CourseDto?> FirstOrDefault(ICourseService.Filter filter)
+        public async Task<CourseDto?> FirstOrDefault(ICourseService.Filter filter)
         {
-            throw new NotImplementedException();
+            Course? course = await _courseRepository.FirstOrDefault(c => filter(CourseMapper.CourseToDto(c)));
+            if (course == null) return null;
+            return CourseMapper.CourseToDto(course);
         }
 
-        public Task<CourseDto?> Get(Guid id)
+        public async Task<CourseDto?> Get(Guid id)
         {
-            throw new NotImplementedException();
+            Course? course = await _courseRepository.Get(id);
+            return course == null ? null : CourseMapper.CourseToDto(course);
         }
 
-        public Task<List<CourseDto>> GetAll()
+        public async Task<List<CourseDto>> GetAll()
         {
-            throw new NotImplementedException();
+            return (await _courseRepository.GetAll())
+                .Select(c => CourseMapper.CourseToDto(c))
+                .ToList();
         }
 
-        public Task<CourseDto?> Update(Guid id, CourseDto userDto)
+        public async Task<CourseDto?> Update(Guid id, CourseDto courseDto)
         {
-            throw new NotImplementedException();
+            Course? newCourse = await _courseRepository.Update(id, new Course()
+            {
+                Name = courseDto.Name,
+                Description = courseDto.Description,
+                AuthorId = courseDto.Author.Id,
+            });
+            if (newCourse == null) return null;
+            return CourseMapper.CourseToDto(newCourse);
         }
     }
 }

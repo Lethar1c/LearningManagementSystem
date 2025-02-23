@@ -10,7 +10,7 @@ namespace LearningManagementSystem.DataAccess.Courses
         {
             _context = context;
         }
-        public async Task<Course?> Add(Course course)
+        public async Task<Course> Add(Course course)
         {
             await _context.Courses.AddAsync(course);
             await _context.SaveChangesAsync();

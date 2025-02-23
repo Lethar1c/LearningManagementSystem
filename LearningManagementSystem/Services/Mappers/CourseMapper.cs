@@ -3,9 +3,9 @@ using LearningManagementSystem.Dtos;
 
 namespace LearningManagementSystem.Services.Mappers
 {
-    public class CourseMapper
+    public static class CourseMapper
     {
-        public CourseDto CourseToDto(Course course)
+        public static CourseDto CourseToDto(Course course)
         {
             return new CourseDto()
             {
