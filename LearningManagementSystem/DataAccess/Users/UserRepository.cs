@@ -29,9 +29,14 @@ namespace LearningManagementSystem.DataAccess.Users
 
         public async Task<User?> FirstOrDefault(IUserRepository.Filter filter)
         {
-            return await _context.Users
+            List<User> users = await _context.Users
                 .Include(u => u.Courses)
-                .FirstOrDefaultAsync(u => filter(u));
+                .ToListAsync();
+            foreach (User user in users)
+            {
+                if (filter(user)) return user;
+            }
+            return null;
         }
 
         public async Task<User?> Get(Guid id)

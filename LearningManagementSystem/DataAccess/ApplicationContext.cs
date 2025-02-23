@@ -9,7 +9,7 @@ namespace LearningManagementSystem.DataAccess
         public DbSet<Course> Courses { get; set; }
         public ApplicationContext()
         {
-            Database.Migrate();
+            Database.EnsureCreated();
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

@@ -5,6 +5,8 @@ using LearningManagementSystem.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddMvc();
+
 builder.Services.AddDbContext<ApplicationContext>();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -17,6 +19,6 @@ builder.Services.AddScoped<ICourseService, CourseService>();
 
 var app = builder.Build();
 
-app.MapGet("/", () => "Hello World!");
+app.MapControllers();
 
 app.Run();

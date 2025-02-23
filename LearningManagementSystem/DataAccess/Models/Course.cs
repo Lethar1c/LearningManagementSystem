@@ -7,6 +7,7 @@
         public string Description { get; set; } = null!;
         public Guid AuthorId;
         public User Author { get; set; } = null!;
-        public List<User> Users { get; set; } = null!;
+        public List<User> Users { get; set; } = [];
+        public Course() { }
     }
 }
