@@ -29,17 +29,26 @@ namespace LearningManagementSystem.DataAccess.Courses
 
         public async Task<Course?> FirstOrDefault(ICourseRepository.Filter filter)
         {
-            return await _context.Courses.FirstOrDefaultAsync(c => filter(c));
+            return await _context.Courses
+                .Include(c => c.Author)
+                .Include(c => c.Users)
+                .FirstOrDefaultAsync(c => filter(c));
         }
 
         public async Task<Course?> Get(Guid id)
         {
-            return await _context.Courses.FirstOrDefaultAsync(c => c.Id == id);
+            return await _context.Courses
+                .Include(c => c.Author)
+                .Include(c => c.Users)
+                .FirstOrDefaultAsync(c => c.Id == id);
         }
 
         public async Task<List<Course>> GetAll()
         {
-            return await _context.Courses.ToListAsync();
+            return await _context.Courses
+                .Include(c => c.Author)
+                .Include(c => c.Users)
+                .ToListAsync();
         }
 
         public async Task<Course?> Update(Guid id, Course course)

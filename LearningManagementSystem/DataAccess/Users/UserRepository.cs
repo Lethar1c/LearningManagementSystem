@@ -29,17 +29,23 @@ namespace LearningManagementSystem.DataAccess.Users
 
         public async Task<User?> FirstOrDefault(IUserRepository.Filter filter)
         {
-            return await _context.Users.FirstOrDefaultAsync(u => filter(u));
+            return await _context.Users
+                .Include(u => u.Courses)
+                .FirstOrDefaultAsync(u => filter(u));
         }
 
         public async Task<User?> Get(Guid id)
         {
-            return await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+            return await _context.Users
+                .Include(u => u.Courses)
+                .FirstOrDefaultAsync(u => u.Id == id);
         }
 
         public async Task<List<User>> GetAll()
         {
-            return await _context.Users.ToListAsync();
+            return await _context.Users
+                .Include(u => u.Courses)
+                .ToListAsync();
         }
 
         public async Task<User?> Update(Guid id, User user)
