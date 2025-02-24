@@ -12,13 +12,13 @@ namespace LearningManagementSystem.Services
         {
             _courseRepository = courseRepository;
         }
-        public async Task<CourseDto> Add(CourseDto courseDto)
+        public async Task<CourseDto> Add(CreateCourseDto courseDto)
         {
             Course course = await _courseRepository.Add(new Course()
             {
                 Name = courseDto.Name,
                 Description = courseDto.Description,
-                AuthorId = courseDto.Author.Id,
+                AuthorId = courseDto.AuthorId,
             });
             return CourseMapper.CourseToDto(course);
         }
@@ -48,13 +48,13 @@ namespace LearningManagementSystem.Services
                 .ToList();
         }
 
-        public async Task<CourseDto?> Update(Guid id, CourseDto courseDto)
+        public async Task<CourseDto?> Update(Guid id, UpdateCourseDto courseDto)
         {
             Course? newCourse = await _courseRepository.Update(id, new Course()
             {
                 Name = courseDto.Name,
                 Description = courseDto.Description,
-                AuthorId = courseDto.Author.Id,
+                AuthorId = courseDto.AuthorId,
             });
             if (newCourse == null) return null;
             return CourseMapper.CourseToDto(newCourse);
