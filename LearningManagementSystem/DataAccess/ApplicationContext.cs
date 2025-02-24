@@ -22,6 +22,9 @@ namespace LearningManagementSystem.DataAccess
                         .WithMany(u => u.Courses)
                         .HasForeignKey(c => c.AuthorId)
                         .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<User>()
+                        .HasIndex(u => u.Email)
+                        .IsUnique();
         }
     }
 }

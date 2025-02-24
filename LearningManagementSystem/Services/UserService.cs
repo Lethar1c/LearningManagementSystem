@@ -72,6 +72,8 @@ namespace LearningManagementSystem.Services
 
         public async Task<UserDto?> Update(Guid id, UpdateUserDto userDto)
         {
+            User? userWithSameEmail = await _userRepository.FirstOrDefault(u => u.Email == userDto.Email);
+            if (userWithSameEmail != null) return null;
             User? user = await _userRepository.Get(id);
             if (user == null) { return null; }
             user.Email = userDto.Email ?? user.Email;
