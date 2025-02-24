@@ -59,5 +59,10 @@ namespace LearningManagementSystem.Services
             if (newCourse == null) return null;
             return CourseMapper.CourseToDto(newCourse);
         }
+
+        public async Task<bool> Enroll(Guid courseId, Guid userId)
+        {
+            return await _courseRepository.Enroll(courseId, userId);
+        }
     }
 }

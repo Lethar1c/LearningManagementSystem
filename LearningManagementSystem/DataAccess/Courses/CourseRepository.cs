@@ -63,5 +63,17 @@ namespace LearningManagementSystem.DataAccess.Courses
             await _context.SaveChangesAsync();
             return existingCourse;
         }
+
+        public async Task<bool> Enroll(Guid courseId, Guid userId)
+        {
+            User? user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            if (user == null) return false;
+            Course? course = await _context.Courses.FirstOrDefaultAsync(c => c.Id == courseId);
+            if (course == null) return false;
+
+            user.EnrolledCourses.Add(course);
+            await _context.SaveChangesAsync();
+            return true;
+        }
     }
 }

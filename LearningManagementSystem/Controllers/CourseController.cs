@@ -59,5 +59,18 @@ namespace LearningManagementSystem.Controllers
             await _courseService.Delete(guid);
             return NoContent();
         }
+
+
+
+        [HttpPost("enroll")]
+        public async Task<IActionResult> Enroll(EnrollStudentDto dto)
+        {
+            bool result = await _courseService.Enroll(dto.CourseId, dto.UserId);
+            if (result)
+            {
+                return NoContent();
+            }
+            return BadRequest("Cannot enroll student to a course");
+        }
     }
 }

@@ -11,5 +11,6 @@ namespace LearningManagementSystem.Services
         Task<CourseDto?> FirstOrDefault(Filter filter);
         Task Delete(Guid id);
         Task<CourseDto?> Update(Guid id, UpdateCourseDto courseDto);
+        Task<bool> Enroll(Guid courseId, Guid userId);
     }
 }

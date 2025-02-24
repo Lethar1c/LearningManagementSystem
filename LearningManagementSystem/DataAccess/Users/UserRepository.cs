@@ -31,6 +31,7 @@ namespace LearningManagementSystem.DataAccess.Users
         {
             List<User> users = await _context.Users
                 .Include(u => u.Courses)
+                .Include(u => u.EnrolledCourses)
                 .ToListAsync();
             foreach (User user in users)
             {
@@ -43,6 +44,7 @@ namespace LearningManagementSystem.DataAccess.Users
         {
             return await _context.Users
                 .Include(u => u.Courses)
+                .Include(u => u.EnrolledCourses)
                 .FirstOrDefaultAsync(u => u.Id == id);
         }
 
@@ -50,6 +52,7 @@ namespace LearningManagementSystem.DataAccess.Users
         {
             return await _context.Users
                 .Include(u => u.Courses)
+                .Include(u => u.EnrolledCourses)
                 .ToListAsync();
         }
 
