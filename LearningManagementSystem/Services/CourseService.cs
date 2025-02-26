@@ -64,5 +64,10 @@ namespace LearningManagementSystem.Services
         {
             return await _courseRepository.Enroll(courseId, userId);
         }
+
+        public async Task<bool> Leave(Guid courseId, Guid userId)
+        {
+            return await _courseRepository.Leave(courseId, userId);
+        }
     }
 }

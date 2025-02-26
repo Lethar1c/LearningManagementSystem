@@ -75,5 +75,19 @@ namespace LearningManagementSystem.DataAccess.Courses
             await _context.SaveChangesAsync();
             return true;
         }
+
+        public async Task<bool> Leave(Guid courseId, Guid userId)
+        {
+            User? user = await _context.Users
+                .Include(u => u.EnrolledCourses)
+                .FirstOrDefaultAsync(u => u.Id == userId);
+            if (user == null) return false;
+            Course? course = user.EnrolledCourses.Find(c => c.Id == courseId);
+            if (course == null) return false;
+
+            user.EnrolledCourses.Remove(course);
+            await _context.SaveChangesAsync();
+            return true;
+        }
     }
 }

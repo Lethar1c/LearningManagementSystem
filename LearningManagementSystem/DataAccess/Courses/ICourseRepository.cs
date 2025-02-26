@@ -13,5 +13,6 @@ namespace LearningManagementSystem.DataAccess.Courses
         Task<Course?> Update(Guid id, Course user);
         Task Delete(Guid id);
         Task<bool> Enroll(Guid courseId, Guid userId);
+        Task<bool> Leave(Guid courseId, Guid userId);
     }
 }

@@ -72,5 +72,16 @@ namespace LearningManagementSystem.Controllers
             }
             return BadRequest("Cannot enroll student to a course");
         }
+
+        [HttpDelete("leave")]
+        public async Task<IActionResult> Leave(EnrollStudentDto dto)
+        {
+            bool result = await _courseService.Leave(dto.CourseId, dto.UserId);
+            if (result)
+            {
+                return NoContent();
+            }
+            return BadRequest("Cannot leave student from a course");
+        }
     }
 }
