@@ -2,7 +2,7 @@
 {
     public static class FileConfig
     {
-        public const int MaxSize = 5000000;
-        public static readonly string[] AllowedExtensions = ["jpg", "png"];
+        public const int MaxSize = 500000;
+        public static readonly string[] AllowedExtensions = [".jpg", ".png"];
     }
 }

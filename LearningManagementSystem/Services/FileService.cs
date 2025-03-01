@@ -58,8 +58,12 @@ namespace LearningManagementSystem.Services
         public bool Upload(IFormFile? file)
         {
             if (file == null) throw new ArgumentNullException(nameof(file));
+            if (file.Length > FileConfig.MaxSize)
+            {
+                return false;
+            }
             string extention = GetExtension(file);
-            if (FileConfig.AllowedExtensions.Contains(extention))
+            if (!FileConfig.AllowedExtensions.Contains(extention))
             {
                 return false;
             }
