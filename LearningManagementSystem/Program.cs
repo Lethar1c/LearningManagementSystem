@@ -15,6 +15,7 @@ builder.Services.AddScoped<ICourseRepository, CourseRepository>();
 builder.Services.AddSingleton<IPasswordService, PasswordService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICourseService, CourseService>();
+builder.Services.AddScoped<IFileService, FileService>();
 
 
 var app = builder.Build();

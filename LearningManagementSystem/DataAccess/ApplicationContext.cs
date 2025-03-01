@@ -7,9 +7,9 @@ namespace LearningManagementSystem.DataAccess
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Course> Courses { get; set; }
+        public DbSet<Models.File> Files { get; set; }
         public ApplicationContext()
         {
-            Database.EnsureCreated();
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
