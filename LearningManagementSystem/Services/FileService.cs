@@ -1,8 +1,9 @@
 ﻿
 using LearningManagementSystem.Config;
 using LearningManagementSystem.DataAccess;
+using LearningManagementSystem.Dtos;
 using Microsoft.Extensions.FileProviders;
-using File = LearningManagementSystem.DataAccess.Models.File;
+using Models = LearningManagementSystem.DataAccess.Models;
 
 namespace LearningManagementSystem.Services
 {
@@ -25,10 +26,10 @@ namespace LearningManagementSystem.Services
 
         public void Delete(string fileId)
         {
-            File? file = _context.Files.FirstOrDefault(f => f.Id.ToString() == fileId);
+            Models.File? file = _context.Files.FirstOrDefault(f => f.Id.ToString() == fileId);
             if (file == null) return;
             string path = file.Path;
-            FileInfo fileInfo = new(path);
+            System.IO.FileInfo fileInfo = new(path);
             if (fileInfo.Exists)
             {
                 fileInfo.Delete();
@@ -37,20 +38,27 @@ namespace LearningManagementSystem.Services
             }
         }
 
-        public IFileInfo? Get(Guid fileId)
+        public FileDto? Get(Guid fileId)
         {
             return Get(fileId.ToString());
         }
 
-        public IFileInfo? Get(string fileId)
+        public FileDto? Get(string fileId)
         {
-            File? file = _context.Files.FirstOrDefault(f => f.Id.ToString().ToUpper() == fileId.ToUpper());
+            Models.File? file = _context.Files.FirstOrDefault(f => f.Id.ToString().ToUpper() == fileId.ToUpper());
             if (file == null) return null;
             PhysicalFileProvider fileProvider = new(Directory.GetCurrentDirectory());
             IFileInfo fileInfo = fileProvider.GetFileInfo(file.Path);
+            string extension = Path.GetExtension(fileInfo.Name);
             if (fileInfo.Exists)
             {
-                return fileInfo;
+                if (fileInfo == null) { return null; }
+                byte[] fileBytes = System.IO.File.ReadAllBytes(fileInfo.PhysicalPath);
+                return new FileDto
+                {
+                    Bytes = fileBytes,
+                    MIMEType = FileConfig.GetFileInfo(extension)?.MIMEType ?? "application/octet-stream"
+                };
             }
             return null;
         }
@@ -70,7 +78,7 @@ namespace LearningManagementSystem.Services
             {
                 file.CopyTo(fileStream);
             }
-            _context.Files.Add(new File
+            _context.Files.Add(new Models.File
             {
                 Id = id,
                 Name = fileName,

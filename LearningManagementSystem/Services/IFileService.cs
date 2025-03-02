@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.FileProviders;
+﻿using LearningManagementSystem.Dtos;
 
 namespace LearningManagementSystem.Services
 {
@@ -7,7 +7,7 @@ namespace LearningManagementSystem.Services
         bool Upload(IFormFile file);
         void Delete(Guid fileId);
         void Delete(string fileId);
-        IFileInfo? Get(Guid fileId);
-        IFileInfo? Get(string fileId);
+        FileDto? Get(Guid fileId);
+        FileDto? Get(string fileId);
     }
 }
