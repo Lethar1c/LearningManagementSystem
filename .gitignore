@@ -361,3 +361,7 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/LearningManagementSystem/files
+/LearningManagementSystem/database.sqlite-shm
+/LearningManagementSystem/database.sqlite
+/LearningManagementSystem/database.sqlite-wal
