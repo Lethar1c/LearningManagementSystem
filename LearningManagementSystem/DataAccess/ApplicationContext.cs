@@ -8,6 +8,7 @@ namespace LearningManagementSystem.DataAccess
         public DbSet<User> Users { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<Models.File> Files { get; set; }
+        public DbSet<Lesson> Lessons { get; set; }
         public ApplicationContext()
         {
         }
@@ -28,6 +29,8 @@ namespace LearningManagementSystem.DataAccess
             modelBuilder.Entity<User>()
                         .HasIndex(u => u.Email)
                         .IsUnique();
+            modelBuilder.Entity<Lesson>()
+                        .HasMany(l => l.AttachedFiles);
         }
     }
 }
