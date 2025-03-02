@@ -7,7 +7,7 @@ namespace LearningManagementSystem.Services
         bool Upload(IFormFile file);
         void Delete(Guid fileId);
         void Delete(string fileId);
-        FileDto? Get(Guid fileId);
-        FileDto? Get(string fileId);
+        FileInfoDto? Get(Guid fileId);
+        FileInfoDto? Get(string fileId);
     }
 }

@@ -17,7 +17,7 @@ namespace LearningManagementSystem.Controllers
         [HttpGet("{guid}")]
         public IActionResult Get(string guid)
         {
-            FileDto? fileDto = _fileService.Get(guid);
+            FileInfoDto? fileDto = _fileService.Get(guid);
             if (fileDto == null) { return NotFound(); }
             return File(fileDto.Bytes, fileDto.MIMEType);
         }

@@ -2,7 +2,8 @@
 {
     public class FileDto
     {
-        public byte[] Bytes { get; set; }
-        public string MIMEType { get; set; } = "application/octet-stream";
+        public Guid Id { get; set; }
+        public string Name { get; set; } = "";
+        public string Path { get; set; } = "";
     }
 }

@@ -38,12 +38,12 @@ namespace LearningManagementSystem.Services
             }
         }
 
-        public FileDto? Get(Guid fileId)
+        public FileInfoDto? Get(Guid fileId)
         {
             return Get(fileId.ToString());
         }
 
-        public FileDto? Get(string fileId)
+        public FileInfoDto? Get(string fileId)
         {
             Models.File? file = _context.Files.FirstOrDefault(f => f.Id.ToString().ToUpper() == fileId.ToUpper());
             if (file == null) return null;
@@ -54,7 +54,7 @@ namespace LearningManagementSystem.Services
             {
                 if (fileInfo == null) { return null; }
                 byte[] fileBytes = System.IO.File.ReadAllBytes(fileInfo.PhysicalPath);
-                return new FileDto
+                return new FileInfoDto
                 {
                     Bytes = fileBytes,
                     MIMEType = FileConfig.GetFileInfo(extension)?.MIMEType ?? "application/octet-stream"
