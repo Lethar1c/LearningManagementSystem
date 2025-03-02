@@ -58,15 +58,10 @@ namespace LearningManagementSystem.Services
         public bool Upload(IFormFile? file)
         {
             if (file == null) throw new ArgumentNullException(nameof(file));
-            if (file.Length > FileConfig.MaxSize)
-            {
-                return false;
-            }
             string extention = GetExtension(file);
-            if (!FileConfig.AllowedExtensions.Contains(extention))
-            {
-                return false;
-            }
+            Config.FileInfo? fileInfo = FileConfig.GetFileInfo(extention);
+            if (fileInfo == null) return false;
+            if (file.Length > fileInfo.MaxSize) return false;
             Guid id = Guid.NewGuid();
             string fileName = id.ToString() + extention;
             string fileStreamPath = Path.Combine(Directory.GetCurrentDirectory(), "files");
