@@ -83,5 +83,27 @@ namespace LearningManagementSystem.Controllers
             }
             return BadRequest("Cannot leave student from a course");
         }
+
+        [HttpPost("attach-lesson")]
+        public async Task<IActionResult> AttachLesson(AttachLessonDto dto)
+        {
+            bool result = await _courseService.AttachLesson(dto.CourseId, dto.LessonId);
+            if (result)
+            {
+                return NoContent();
+            }
+            return BadRequest("Cannot attach lesson to a course");
+        }
+
+        [HttpPost("detach-lesson")]
+        public async Task<IActionResult> DetachLesson(AttachLessonDto dto)
+        {
+            bool result = await _courseService.DetachLesson(dto.CourseId, dto.LessonId);
+            if (result)
+            {
+                return NoContent();
+            }
+            return BadRequest("Cannot detach lesson to a course");
+        }
     }
 }

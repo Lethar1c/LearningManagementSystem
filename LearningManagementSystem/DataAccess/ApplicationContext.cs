@@ -26,11 +26,17 @@ namespace LearningManagementSystem.DataAccess
             modelBuilder.Entity<Course>()
                         .HasMany(c => c.Users)
                         .WithMany(u => u.EnrolledCourses);
+            modelBuilder.Entity<Course>()
+                        .HasMany(c => c.Lessons)
+                        .WithOne(l => l.Course)
+                        .HasForeignKey(l => l.CourseId)
+                        .OnDelete(DeleteBehavior.SetNull);
             modelBuilder.Entity<User>()
                         .HasIndex(u => u.Email)
                         .IsUnique();
             modelBuilder.Entity<Lesson>()
                         .HasMany(l => l.AttachedFiles);
+
         }
     }
 }

@@ -8,6 +8,7 @@
         public Guid AuthorId;
         public User Author { get; set; } = null!;
         public List<User> Users { get; set; } = [];
+        public List<Lesson> Lessons { get; set; }
         public Course() { }
     }
 }

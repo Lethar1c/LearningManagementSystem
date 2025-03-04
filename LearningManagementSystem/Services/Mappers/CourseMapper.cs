@@ -9,6 +9,11 @@ namespace LearningManagementSystem.Services.Mappers
         public static CourseDto CourseToDto(Course course)
         {
             UserDto? authorDto;
+            List<LessonDto> lessons = [];
+            foreach (Lesson lesson in course.Lessons)
+            {
+                lessons.Add(LessonMapper.LessonToDto(lesson));
+            }
             if (course.Author == null)
             {
                 authorDto = null;
@@ -22,7 +27,8 @@ namespace LearningManagementSystem.Services.Mappers
                 Id = course.Id,
                 Name = course.Name,
                 Description = course.Description,
-                Author = authorDto
+                Author = authorDto,
+                Lessons = lessons
             };
         }
     }

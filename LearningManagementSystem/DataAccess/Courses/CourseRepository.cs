@@ -32,6 +32,7 @@ namespace LearningManagementSystem.DataAccess.Courses
             return await _context.Courses
                 .Include(c => c.Author)
                 .Include(c => c.Users)
+                .Include(c => c.Lessons)
                 .FirstOrDefaultAsync(c => filter(c));
         }
 
@@ -48,6 +49,7 @@ namespace LearningManagementSystem.DataAccess.Courses
             return await _context.Courses
                 .Include(c => c.Author)
                 .Include(c => c.Users)
+                .Include(c => c.Lessons)
                 .ToListAsync();
         }
 
@@ -87,6 +89,32 @@ namespace LearningManagementSystem.DataAccess.Courses
 
             user.EnrolledCourses.Remove(course);
             await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> AttachLesson(Guid courseId, Guid lessonId)
+        {
+            Course? course = await _context.Courses
+                .Include(c => c.Lessons)
+                .FirstOrDefaultAsync(c => c.Id == courseId);
+            if (course == null) return false;
+            Lesson? lesson = await _context.Lessons
+                .FirstOrDefaultAsync(l => l.Id == lessonId);
+            if (lesson == null) return false;
+            course.Lessons.Add(lesson);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> DetachLesson(Guid courseId, Guid lessonId)
+        {
+            Course? course = await _context.Courses
+                .FirstOrDefaultAsync(c => c.Id == courseId);
+            if (course == null) return false;
+            Lesson? lesson = await _context.Lessons
+                .FirstOrDefaultAsync(l => l.Id == lessonId);
+            if (lesson == null) return false;
+            course.Lessons.Remove(lesson);
             return true;
         }
     }

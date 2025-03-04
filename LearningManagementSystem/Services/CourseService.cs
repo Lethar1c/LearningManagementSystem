@@ -19,6 +19,7 @@ namespace LearningManagementSystem.Services
                 Name = courseDto.Name,
                 Description = courseDto.Description,
                 AuthorId = courseDto.AuthorId,
+                Lessons = []
             });
             return CourseMapper.CourseToDto(course);
         }
@@ -68,6 +69,16 @@ namespace LearningManagementSystem.Services
         public async Task<bool> Leave(Guid courseId, Guid userId)
         {
             return await _courseRepository.Leave(courseId, userId);
+        }
+
+        public async Task<bool> AttachLesson(Guid courseId, Guid lessonId)
+        {
+            return await _courseRepository.AttachLesson(courseId, lessonId);
+        }
+
+        public async Task<bool> DetachLesson(Guid courseId, Guid lessonId)
+        {
+            return await _courseRepository.DetachLesson(courseId, lessonId);
         }
     }
 }
