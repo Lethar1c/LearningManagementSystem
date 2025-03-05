@@ -1,4 +1,5 @@
-﻿using LearningManagementSystem.DataAccess.Models;
+﻿using LearningManagementSystem.Config.Results;
+using LearningManagementSystem.DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace LearningManagementSystem.DataAccess.Lessons
@@ -17,15 +18,15 @@ namespace LearningManagementSystem.DataAccess.Lessons
             return lesson;
         }
 
-        public async Task<bool> AttachFile(Guid lessonId, Guid fileId)
+        public async Task<AttachFileResult> AttachFile(Guid lessonId, Guid fileId)
         {
             Models.File? file = await _context.Files.FirstOrDefaultAsync(f => f.Id == fileId);
-            if (file == null) return false;
+            if (file == null) return AttachFileResult.FileNotFound;
             Lesson? lesson = await Get(lessonId);
-            if (lesson == null) return false;
+            if (lesson == null) return AttachFileResult.LessonNotFound;
             lesson.AttachedFiles.Add(file);
             await _context.SaveChangesAsync();
-            return true;
+            return AttachFileResult.Success;
         }
 
         public async Task Delete(Guid id)
@@ -38,18 +39,18 @@ namespace LearningManagementSystem.DataAccess.Lessons
             }
         }
 
-        public async Task<bool> DetachFile(Guid lessonId, Guid fileId)
+        public async Task<AttachFileResult> DetachFile(Guid lessonId, Guid fileId)
         {
             Lesson? lesson = await _context.Lessons
                 .Include(l => l.AttachedFiles)
                 .FirstOrDefaultAsync(l => l.Id == lessonId);
-            if (lesson == null) return false;
+            if (lesson == null) return AttachFileResult.LessonNotFound;
             Models.File? file = await _context.Files.FirstOrDefaultAsync(f => f.Id == fileId);
-            if (file == null) return false;
+            if (file == null) return AttachFileResult.FileNotFound;
 
             lesson.AttachedFiles.Remove(file);
             await _context.SaveChangesAsync();
-            return true;
+            return AttachFileResult.Success;
         }
 
         public async Task<Lesson?> Get(Guid id)

@@ -1,4 +1,5 @@
-﻿using LearningManagementSystem.DataAccess.Courses;
+﻿using LearningManagementSystem.Config.Results;
+using LearningManagementSystem.DataAccess.Courses;
 using LearningManagementSystem.DataAccess.Models;
 using LearningManagementSystem.Dtos;
 using LearningManagementSystem.Services.Mappers;
@@ -61,22 +62,22 @@ namespace LearningManagementSystem.Services
             return CourseMapper.CourseToDto(newCourse);
         }
 
-        public async Task<bool> Enroll(Guid courseId, Guid userId)
+        public async Task<EnrollUserResult> Enroll(Guid courseId, Guid userId)
         {
             return await _courseRepository.Enroll(courseId, userId);
         }
 
-        public async Task<bool> Leave(Guid courseId, Guid userId)
+        public async Task<EnrollUserResult> Leave(Guid courseId, Guid userId)
         {
             return await _courseRepository.Leave(courseId, userId);
         }
 
-        public async Task<bool> AttachLesson(Guid courseId, Guid lessonId)
+        public async Task<AttachLessonResult> AttachLesson(Guid courseId, Guid lessonId)
         {
             return await _courseRepository.AttachLesson(courseId, lessonId);
         }
 
-        public async Task<bool> DetachLesson(Guid courseId, Guid lessonId)
+        public async Task<AttachLessonResult> DetachLesson(Guid courseId, Guid lessonId)
         {
             return await _courseRepository.DetachLesson(courseId, lessonId);
         }

@@ -1,4 +1,5 @@
-﻿using LearningManagementSystem.DataAccess.Lessons;
+﻿using LearningManagementSystem.Config.Results;
+using LearningManagementSystem.DataAccess.Lessons;
 using LearningManagementSystem.DataAccess.Models;
 using LearningManagementSystem.Dtos;
 using LearningManagementSystem.Services.Mappers;
@@ -24,7 +25,7 @@ namespace LearningManagementSystem.Services
             return LessonMapper.LessonToDto(lesson);
         }
 
-        public async Task<bool> AttachFile(Guid lessonId, Guid fileId)
+        public async Task<AttachFileResult> AttachFile(Guid lessonId, Guid fileId)
         {
             return await _lessonRepository.AttachFile(lessonId, fileId);
         }
@@ -34,7 +35,7 @@ namespace LearningManagementSystem.Services
             await _lessonRepository.Delete(id);
         }
 
-        public async Task<bool> DetachFile(Guid lessonId, Guid fileId)
+        public async Task<AttachFileResult> DetachFile(Guid lessonId, Guid fileId)
         {
             return await _lessonRepository.DetachFile(lessonId, fileId);
         }

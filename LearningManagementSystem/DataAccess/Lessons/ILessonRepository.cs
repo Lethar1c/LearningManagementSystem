@@ -1,4 +1,5 @@
-﻿using LearningManagementSystem.DataAccess.Models;
+﻿using LearningManagementSystem.Config.Results;
+using LearningManagementSystem.DataAccess.Models;
 
 namespace LearningManagementSystem.DataAccess.Lessons
 {
@@ -9,7 +10,7 @@ namespace LearningManagementSystem.DataAccess.Lessons
         Task<Lesson> Add(Lesson lesson);
         Task<Lesson?> Update(Guid id, Lesson lesson);
         Task Delete(Guid id);
-        Task<bool> AttachFile(Guid lessonId, Guid fileId);
-        Task<bool> DetachFile(Guid lessonId, Guid fileId);
+        Task<AttachFileResult> AttachFile(Guid lessonId, Guid fileId);
+        Task<AttachFileResult> DetachFile(Guid lessonId, Guid fileId);
     }
 }

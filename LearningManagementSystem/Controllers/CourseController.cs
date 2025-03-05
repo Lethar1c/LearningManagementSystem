@@ -1,4 +1,5 @@
-﻿using LearningManagementSystem.Dtos;
+﻿using LearningManagementSystem.Config.Results;
+using LearningManagementSystem.Dtos;
 using LearningManagementSystem.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -65,45 +66,69 @@ namespace LearningManagementSystem.Controllers
         [HttpPost("enroll")]
         public async Task<IActionResult> Enroll(EnrollStudentDto dto)
         {
-            bool result = await _courseService.Enroll(dto.CourseId, dto.UserId);
-            if (result)
+            EnrollUserResult result = await _courseService.Enroll(dto.CourseId, dto.UserId);
+            switch (result)
             {
-                return NoContent();
+                case EnrollUserResult.Success:
+                    return Ok();
+                case EnrollUserResult.CourseNotFound:
+                    return BadRequest($"Cannot find course with GUID = {dto.CourseId}");
+                case EnrollUserResult.UserNotFound:
+                    return BadRequest($"Cannot find user with GUID = {dto.UserId}");
+                default:
+                    return BadRequest("Cannot enroll student to a course");
             }
-            return BadRequest("Cannot enroll student to a course");
         }
 
         [HttpDelete("leave")]
         public async Task<IActionResult> Leave(EnrollStudentDto dto)
         {
-            bool result = await _courseService.Leave(dto.CourseId, dto.UserId);
-            if (result)
+            EnrollUserResult result = await _courseService.Leave(dto.CourseId, dto.UserId);
+            switch (result)
             {
-                return NoContent();
+                case EnrollUserResult.Success:
+                    return Ok();
+                case EnrollUserResult.CourseNotFound:
+                    return BadRequest($"Cannot find course with GUID = {dto.CourseId}");
+                case EnrollUserResult.UserNotFound:
+                    return BadRequest($"Cannot find user with GUID = {dto.UserId}");
+                default:
+                    return BadRequest("Cannot leave student to a course");
             }
-            return BadRequest("Cannot leave student from a course");
         }
 
         [HttpPost("attach-lesson")]
         public async Task<IActionResult> AttachLesson(AttachLessonDto dto)
         {
-            bool result = await _courseService.AttachLesson(dto.CourseId, dto.LessonId);
-            if (result)
+            AttachLessonResult result = await _courseService.AttachLesson(dto.CourseId, dto.LessonId);
+            switch (result)
             {
-                return NoContent();
+                case AttachLessonResult.Success:
+                    return Ok();
+                case AttachLessonResult.CourseNotFound:
+                    return BadRequest($"Cannot find course with id = {dto.CourseId}");
+                case AttachLessonResult.LessonNotFound:
+                    return BadRequest($"Cannot find lesson with id = {dto.LessonId}");
+                default:
+                    return BadRequest("Cannot attach lesson to a course");
             }
-            return BadRequest("Cannot attach lesson to a course");
         }
 
         [HttpPost("detach-lesson")]
         public async Task<IActionResult> DetachLesson(AttachLessonDto dto)
         {
-            bool result = await _courseService.DetachLesson(dto.CourseId, dto.LessonId);
-            if (result)
+            AttachLessonResult result = await _courseService.DetachLesson(dto.CourseId, dto.LessonId);
+            switch (result)
             {
-                return NoContent();
+                case AttachLessonResult.Success:
+                    return Ok();
+                case AttachLessonResult.CourseNotFound:
+                    return BadRequest($"Cannot find course with id = {dto.CourseId}");
+                case AttachLessonResult.LessonNotFound:
+                    return BadRequest($"Cannot find lesson with id = {dto.LessonId}");
+                default:
+                    return BadRequest("Cannot detach lesson to a course");
             }
-            return BadRequest("Cannot detach lesson to a course");
         }
     }
 }

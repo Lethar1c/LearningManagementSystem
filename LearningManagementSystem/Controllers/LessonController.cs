@@ -1,4 +1,5 @@
-﻿using LearningManagementSystem.Dtos;
+﻿using LearningManagementSystem.Config.Results;
+using LearningManagementSystem.Dtos;
 using LearningManagementSystem.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -63,25 +64,37 @@ namespace LearningManagementSystem.Controllers
         [HttpPost("attach-file")]
         public async Task<IActionResult> AttachFile(AttachFileDto attachFileDto)
         {
-            bool result = await _lessonService.AttachFile(attachFileDto.LessonId,
+            AttachFileResult result = await _lessonService.AttachFile(attachFileDto.LessonId,
                 attachFileDto.FileId);
-            if (result == false)
+            switch (result)
             {
-                return BadRequest();
+                case AttachFileResult.Success:
+                    return Ok(result);
+                case AttachFileResult.FileNotFound:
+                    return BadRequest($"Cannot find file with GUID = {attachFileDto.FileId}");
+                case AttachFileResult.LessonNotFound:
+                    return BadRequest($"Cannot find user with GUID = {attachFileDto.LessonId}");
+                default:
+                    return BadRequest("Cannot attach file to a course");
             }
-            return Ok();
         }
 
         [HttpPost("detach-file")]
         public async Task<IActionResult> DetachFile(AttachFileDto attachFileDto)
         {
-            bool result = await _lessonService.DetachFile(attachFileDto.LessonId,
+            AttachFileResult result = await _lessonService.DetachFile(attachFileDto.LessonId,
                 attachFileDto.FileId);
-            if (result == false)
+            switch (result)
             {
-                return BadRequest();
+                case AttachFileResult.Success:
+                    return Ok(result);
+                case AttachFileResult.FileNotFound:
+                    return BadRequest($"Cannot find file with GUID = {attachFileDto.FileId}");
+                case AttachFileResult.LessonNotFound:
+                    return BadRequest($"Cannot find user with GUID = {attachFileDto.LessonId}");
+                default:
+                    return BadRequest("Cannot attach file to a course");
             }
-            return Ok();
         }
     }
 }

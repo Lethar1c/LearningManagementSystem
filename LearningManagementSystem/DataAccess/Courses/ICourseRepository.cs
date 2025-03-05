@@ -1,4 +1,5 @@
-﻿using LearningManagementSystem.DataAccess.Models;
+﻿using LearningManagementSystem.Config.Results;
+using LearningManagementSystem.DataAccess.Models;
 
 namespace LearningManagementSystem.DataAccess.Courses
 {
@@ -12,9 +13,9 @@ namespace LearningManagementSystem.DataAccess.Courses
         Task<Course> Add(Course course);
         Task<Course?> Update(Guid id, Course user);
         Task Delete(Guid id);
-        Task<bool> Enroll(Guid courseId, Guid userId);
-        Task<bool> Leave(Guid courseId, Guid userId);
-        Task<bool> AttachLesson(Guid courseId, Guid lessonId);
-        Task<bool> DetachLesson(Guid courseId, Guid lessonId);
+        Task<EnrollUserResult> Enroll(Guid courseId, Guid userId);
+        Task<EnrollUserResult> Leave(Guid courseId, Guid userId);
+        Task<AttachLessonResult> AttachLesson(Guid courseId, Guid lessonId);
+        Task<AttachLessonResult> DetachLesson(Guid courseId, Guid lessonId);
     }
 }

@@ -1,4 +1,5 @@
-﻿using LearningManagementSystem.Dtos;
+﻿using LearningManagementSystem.Config.Results;
+using LearningManagementSystem.Dtos;
 
 namespace LearningManagementSystem.Services
 {
@@ -11,9 +12,9 @@ namespace LearningManagementSystem.Services
         Task<CourseDto?> FirstOrDefault(Filter filter);
         Task Delete(Guid id);
         Task<CourseDto?> Update(Guid id, UpdateCourseDto courseDto);
-        Task<bool> Enroll(Guid courseId, Guid userId);
-        Task<bool> Leave(Guid courseId, Guid userId);
-        Task<bool> AttachLesson(Guid courseId, Guid lessonId);
-        Task<bool> DetachLesson(Guid courseId, Guid lessonId);
+        Task<EnrollUserResult> Enroll(Guid courseId, Guid userId);
+        Task<EnrollUserResult> Leave(Guid courseId, Guid userId);
+        Task<AttachLessonResult> AttachLesson(Guid courseId, Guid lessonId);
+        Task<AttachLessonResult> DetachLesson(Guid courseId, Guid lessonId);
     }
 }

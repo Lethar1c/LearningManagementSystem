@@ -1,4 +1,5 @@
-﻿using LearningManagementSystem.DataAccess.Models;
+﻿using LearningManagementSystem.Config.Results;
+using LearningManagementSystem.DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace LearningManagementSystem.DataAccess.Courses
@@ -66,56 +67,56 @@ namespace LearningManagementSystem.DataAccess.Courses
             return existingCourse;
         }
 
-        public async Task<bool> Enroll(Guid courseId, Guid userId)
+        public async Task<EnrollUserResult> Enroll(Guid courseId, Guid userId)
         {
             User? user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
-            if (user == null) return false;
+            if (user == null) return EnrollUserResult.UserNotFound;
             Course? course = await _context.Courses.FirstOrDefaultAsync(c => c.Id == courseId);
-            if (course == null) return false;
+            if (course == null) return EnrollUserResult.CourseNotFound;
 
             user.EnrolledCourses.Add(course);
             await _context.SaveChangesAsync();
-            return true;
+            return EnrollUserResult.Success;
         }
 
-        public async Task<bool> Leave(Guid courseId, Guid userId)
+        public async Task<EnrollUserResult> Leave(Guid courseId, Guid userId)
         {
             User? user = await _context.Users
                 .Include(u => u.EnrolledCourses)
                 .FirstOrDefaultAsync(u => u.Id == userId);
-            if (user == null) return false;
+            if (user == null) return EnrollUserResult.UserNotFound;
             Course? course = user.EnrolledCourses.Find(c => c.Id == courseId);
-            if (course == null) return false;
+            if (course == null) return EnrollUserResult.CourseNotFound;
 
             user.EnrolledCourses.Remove(course);
             await _context.SaveChangesAsync();
-            return true;
+            return EnrollUserResult.Success;
         }
 
-        public async Task<bool> AttachLesson(Guid courseId, Guid lessonId)
+        public async Task<AttachLessonResult> AttachLesson(Guid courseId, Guid lessonId)
         {
             Course? course = await _context.Courses
                 .Include(c => c.Lessons)
                 .FirstOrDefaultAsync(c => c.Id == courseId);
-            if (course == null) return false;
+            if (course == null) return AttachLessonResult.CourseNotFound;
             Lesson? lesson = await _context.Lessons
                 .FirstOrDefaultAsync(l => l.Id == lessonId);
-            if (lesson == null) return false;
+            if (lesson == null) return AttachLessonResult.LessonNotFound;
             course.Lessons.Add(lesson);
             await _context.SaveChangesAsync();
-            return true;
+            return AttachLessonResult.Success;
         }
 
-        public async Task<bool> DetachLesson(Guid courseId, Guid lessonId)
+        public async Task<AttachLessonResult> DetachLesson(Guid courseId, Guid lessonId)
         {
             Course? course = await _context.Courses
                 .FirstOrDefaultAsync(c => c.Id == courseId);
-            if (course == null) return false;
+            if (course == null) return AttachLessonResult.CourseNotFound;
             Lesson? lesson = await _context.Lessons
                 .FirstOrDefaultAsync(l => l.Id == lessonId);
-            if (lesson == null) return false;
+            if (lesson == null) return AttachLessonResult.LessonNotFound;
             course.Lessons.Remove(lesson);
-            return true;
+            return AttachLessonResult.Success;
         }
     }
 }
