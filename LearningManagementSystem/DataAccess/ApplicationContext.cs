@@ -9,6 +9,8 @@ namespace LearningManagementSystem.DataAccess
         public DbSet<Course> Courses { get; set; }
         public DbSet<Models.File> Files { get; set; }
         public DbSet<Lesson> Lessons { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<Permission> Permissions { get; set; }
         public ApplicationContext()
         {
         }
@@ -36,7 +38,9 @@ namespace LearningManagementSystem.DataAccess
                         .IsUnique();
             modelBuilder.Entity<Lesson>()
                         .HasMany(l => l.AttachedFiles);
-
+            modelBuilder.Entity<Role>()
+                        .HasMany(r => r.Permissions)
+                        .WithMany(p => p.Roles);
         }
     }
 }

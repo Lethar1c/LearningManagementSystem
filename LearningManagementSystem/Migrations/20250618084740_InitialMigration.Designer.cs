@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LearningManagementSystem.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20250304191142_AddCourseLessonConnection2")]
-    partial class AddCourseLessonConnection2
+    [Migration("20250618084740_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -111,6 +111,41 @@ namespace LearningManagementSystem.Migrations
                     b.ToTable("Lessons");
                 });
 
+            modelBuilder.Entity("LearningManagementSystem.DataAccess.Models.Permission", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("RoleId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("Permissions");
+                });
+
+            modelBuilder.Entity("LearningManagementSystem.DataAccess.Models.Role", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles");
+                });
+
             modelBuilder.Entity("LearningManagementSystem.DataAccess.Models.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -129,10 +164,15 @@ namespace LearningManagementSystem.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Email")
                         .IsUnique();
+
+                    b.HasIndex("RoleId");
 
                     b.ToTable("Users");
                 });
@@ -180,6 +220,24 @@ namespace LearningManagementSystem.Migrations
                     b.Navigation("Course");
                 });
 
+            modelBuilder.Entity("LearningManagementSystem.DataAccess.Models.Permission", b =>
+                {
+                    b.HasOne("LearningManagementSystem.DataAccess.Models.Role", null)
+                        .WithMany("Permissions")
+                        .HasForeignKey("RoleId");
+                });
+
+            modelBuilder.Entity("LearningManagementSystem.DataAccess.Models.User", b =>
+                {
+                    b.HasOne("LearningManagementSystem.DataAccess.Models.Role", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+                });
+
             modelBuilder.Entity("LearningManagementSystem.DataAccess.Models.Course", b =>
                 {
                     b.Navigation("Lessons");
@@ -188,6 +246,11 @@ namespace LearningManagementSystem.Migrations
             modelBuilder.Entity("LearningManagementSystem.DataAccess.Models.Lesson", b =>
                 {
                     b.Navigation("AttachedFiles");
+                });
+
+            modelBuilder.Entity("LearningManagementSystem.DataAccess.Models.Role", b =>
+                {
+                    b.Navigation("Permissions");
                 });
 
             modelBuilder.Entity("LearningManagementSystem.DataAccess.Models.User", b =>

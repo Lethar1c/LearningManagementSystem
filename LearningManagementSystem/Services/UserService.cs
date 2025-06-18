@@ -58,7 +58,7 @@ namespace LearningManagementSystem.Services
 
         public async Task<UserDto?> Register(RegisterUserDto userDto)
         {
-            User? user = await _userRepository.FirstOrDefault(u => u.Email == userDto.Email);
+            User? user = await _userRepository.FirstOrDefault(u => u.Email == userDto.Email); // UNIQUE !!
             if (user != null) { return null; };
             User newUser = await _userRepository.Add(new User()
             {
